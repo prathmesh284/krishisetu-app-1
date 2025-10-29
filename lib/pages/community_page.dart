@@ -3,14 +3,47 @@ import 'package:krishisetu/pages/dashboard_page.dart';
 import 'package:krishisetu/pages/disease_detection_page.dart';
 import 'package:krishisetu/pages/profile_page.dart';
 
-class CommunityPage extends StatelessWidget {
-  final int _selectedIndex = 2;
+class CommunityPage extends StatefulWidget {
   const CommunityPage({super.key});
+
+  @override
+  State<CommunityPage> createState() => _CommunityPageState();
+}
+
+class _CommunityPageState extends State<CommunityPage> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+
+    setState(() => _selectedIndex = index);
+
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+      );
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const DiseaseDetectionPage()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ProfilePage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Community', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Community',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
@@ -21,7 +54,6 @@ class CommunityPage extends StatelessWidget {
       body: ListView(
         children: [
           _buildPost(
-            context,
             name: 'Ramesh Kumar',
             time: '2 hours ago',
             content:
@@ -32,17 +64,15 @@ class CommunityPage extends StatelessWidget {
             comments: 15,
           ),
           _buildPost(
-            context,
             name: 'Sita Devi',
             time: '5 hours ago',
             title: 'Advice Needed: Weed Control',
             content:
-                'I\'m having trouble with a persistent type of weed in my wheat fields. Has anyone found an effective and organic way to manage it without harming the crop? Any advice would be greatly appreciated by the community.',
+                'I\'m having trouble with a persistent type of weed in my wheat fields. Has anyone found an effective and organic way to manage it without harming the crop?',
             likes: 42,
             comments: 28,
           ),
           _buildVideoPost(
-            context,
             name: 'Vijay Singh',
             time: '1 day ago',
             content:
@@ -70,27 +100,20 @@ class CommunityPage extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Community'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const DashboardPage()));
-          } else if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const DiseaseDetectionPage()));
-          } else if(index == 3){
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
-          }
-        },
+        onTap: _onItemTapped,
       ),
     );
   }
 
-  Widget _buildPost(BuildContext context,
-      {required String name,
-      required String time,
-      String? title,
-      required String content,
-      String? imageUrl,
-      required int likes,
-      required int comments}) {
+  Widget _buildPost({
+    required String name,
+    required String time,
+    String? title,
+    required String content,
+    String? imageUrl,
+    required int likes,
+    required int comments,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
@@ -101,8 +124,7 @@ class CommunityPage extends StatelessWidget {
             Row(
               children: [
                 const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://lh3.googleusercontent.com/a-/AOh14GjGZDFX'),
+                  backgroundImage: NetworkImage('https://lh3.googleusercontent.com/a-/AOh14GjGZDFX'),
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -132,7 +154,7 @@ class CommunityPage extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.thumb_up, color: const Color(0xFF386641)),
+                const Icon(Icons.thumb_up, color: Color(0xFF386641)),
                 const SizedBox(width: 4),
                 Text('$likes'),
                 const SizedBox(width: 16),
@@ -149,13 +171,14 @@ class CommunityPage extends StatelessWidget {
     );
   }
 
-  Widget _buildVideoPost(BuildContext context,
-      {required String name,
-      required String time,
-      required String content,
-      required String imageUrl,
-      required int likes,
-      required int comments}) {
+  Widget _buildVideoPost({
+    required String name,
+    required String time,
+    required String content,
+    required String imageUrl,
+    required int likes,
+    required int comments,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Padding(
@@ -166,8 +189,7 @@ class CommunityPage extends StatelessWidget {
             Row(
               children: [
                 const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://lh3.googleusercontent.com/a-/AOh14GjGZDFX'),
+                  backgroundImage: NetworkImage('https://lh3.googleusercontent.com/a-/AOh14GjGZDFX'),
                 ),
                 const SizedBox(width: 10),
                 Column(
